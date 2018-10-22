@@ -1,6 +1,12 @@
 # bigtable
 BigTable wrapper.
 
+### Basic API
+The API memics the mongoose API. This is for a couple reasons:
+* Node developers are used to it.
+* Its well developed and meets our needs.
+
+#### Example
 ```javascript
 
 const {Schema} = require('@precognitive/bigtable');
@@ -21,6 +27,7 @@ const options = {
   projectId: '122'
 };
 
+// In future schema will be managed in a seperate table from the main data
 const model = Schema.create(schema, options);
 
 class SomeModel {
@@ -35,5 +42,10 @@ class SomeModel {
   }
 }
 
-module.exports = bigtable.load();
+module.exports = model.load('something', SomeModel);
 ```
+
+#### Features on Roadmap
+* User Interface for managing "Models"
+* Natively managed schemas
+* BigQuery intergration (generates BigQuery schema and can automatically connect etc.).
