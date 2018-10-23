@@ -205,3 +205,6 @@ The API is not fully defined but we plan on supporting:
 * PolyMorphism - allow multiple Schemas (two levels deep max) on the same Row
 * Python Support
 * Go Support
+
+### Contact Us
+If you have other ideas, input etc. feel free to reach out directly at [engineering@precognitive.io](mailto:engineering@precognitive.io)
