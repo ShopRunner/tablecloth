@@ -1,24 +1,83 @@
-![TableCloth Logo](/logo.png)
+# ![TableCloth](/logo.png)
+A tool for keeping your interactions with BigTable nice and tidy.
 
-# TableCloth
+# UNDER DEVELOPMENT coming 2019
+This library was originally built for internal use at [@Precognitive](https://github.com/Precognitive). We are working on finishing up some abstractions and pulling out some @precognitive specific code. Once we do so we will release our initial version
 
+The below API is a high-level look at the API we intend to bake into TableCloth in 2019. Some values could change, as this is just meant to give you base level information.
 
-BigTable wrapper.
+If you are interested in being contacted/emailed when we release TableCloth fill out the contact form at [https://precognitive.io/contact/](https://precognitive.io/contact/) with the message being "BigTable". We will setup a mailing list for updates.
 
--> PolyMorphism
-
-# ->> number of versions returned and saved
+## Why a BigTable wrapper?
+We love working with BigTable, its ability to predictively scale, handle tens of thousands of requests per second and its low latency responses (sub 5ms). We don't love working with (byte) strings for all of our data. Our applications need multiple data types and clean interface for modeling data. TableCloth was built to meet both of these requirements (and more).
 
 ## Features
-* Schema Enforcement
-* Multiple Data Type Support (Array, Integer, etc.)
-* Multiple Indexes
-* BigQuery Schema generation
+* Schema Enforcement - Column Family and Column level data type enforcement.
+* Multiple Data Type Support - Arrays, String, Numbers etc. are all supported out of the box. No more casting, JSON parse errors and other issues with storing byte strings.
+* Multiple Indexes - BigTable has a single index (the rowKey) and for most applications this just won't work. TableCloth supports multiple indexes out of the box.
+* BigQuery Schema generation - Generate a BigQuery schema to be used when creating a BigTable + BigQuery connection
 
-### Basic API
+### Getting Started (example)
+First off you will need to create your base table schema. For the examples below we will be creating a user table for storing user data.
+
+```javascript 
+const {TableCloth, Schema} = require('@precognitive/tablecloth');
+
+const db = new TableCloth({
+  // pass in connection configs i.e. projectId
+});
+
+const {ColumnFamilyTypes, DataTypes} = Schema;
+
+const userSchema = Schema({
+  id: {
+    type: ColumnFamilyTypes.Base,
+    columns: {
+      userId: {type: DataTypes.String, index: true}
+    }
+  },
+  data: {
+    type: ColumnFamilyTypes.Base,
+    columns: {
+      email: {type: DataTypes.String, index: true},
+      created: {type: DataTypes.DateTime},
+      updated: {type: DataTypes.DateTime}
+    }
+  }
+}, ['id.userId', 'data.email']);
+
+// The above will create a rowKey of `<id.userId>#<data.email>` and two index tables, one for userId and one for email.
+
+// 'user' is name of the table
+const User = db.model('user', userSchema);
+
+module.exports = User;
+
+// This will be run in a separate task/file not in the main application
+// @note Due to the nature of TableCloth escalated permissions are required when intially creating the Base, Schema and Index tables.
+User.migrate({destroy: true});
+
+```
+
+
+
+o create the Base, Schema and Index tables. 
+
+**NOTE on Application Permissions:**
+Due to the nature of TableCloth escalated permissions are required when intially creating the Base, Schema and Index tables.
+
+```javascript
+const myModel = 
+
+```
+
+### API Design
 The API mimics the mongoose API. This is for a couple reasons:
-* Node developers are used to it.
+* Many developers are used to it.
 * Its well developed and meets our needs.
+* You can utilize BigTable in a manner similar to a document store
+
+### API & Features
 
 #### Column-Family Types
 // add description
@@ -148,6 +207,10 @@ class SomeModel {
 
 module.exports = model.load('something', SomeModel);
 ```
+
+-> PolyMorphism
+
+# ->> number of versions returned and saved
 
 #### Features on Roadmap
 * User Interface for managing BigTable Models
