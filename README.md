@@ -17,7 +17,7 @@ We love working with BigTable, its ability to predictively scale, handle tens of
 * Multiple Indexes - BigTable has a single index (the rowKey) and for most applications this just won't work. TableCloth supports multiple indexes out of the box.
 * BigQuery Schema generation - Generate a BigQuery schema to be used when querying BigTable via BigQuery.
 
-### Example
+## Example
 Below is an example that demonstrates the high-level API for interacting with TableCloth.
 
 ```javascript 
@@ -64,8 +64,9 @@ module.exports = User;
 
 // This will be run in a separate task/file not in the main application.
 // NOTE: Due to the nature of TableCloth, escalated permissions are required when intially creating the Base, Schema and Index tables.
-User.migrate({destroy: true});
+User.saveSchema({destroy: true});
 ```
+## API & Features
 
 ### Design
 The API mimics the Mongoose API. This is for a couple reasons:
@@ -75,8 +76,6 @@ The API mimics the Mongoose API. This is for a couple reasons:
 * We were using Mongo before, so it made sense.
 
 *NOTE:* TableCloth is **NOT** API compliant or compatiable but mirrors the feel of the Mongoose API.
-
-### API & Features
 
 #### Column-Family Types
 * Base - Key/value pairs with the values being any schema.
@@ -98,16 +97,12 @@ In TableCloth, null, undefined or "" are treated as Nil and will not be stored.
 #### BigQuery Schema Generation
 An API is provided to generate the necessary BigQuery schema based off the Model definition.
 
+**Example:**
 ```javascript
-const {Schema} = require('@precognitive/bigtable');
+const User = require('../models/User.js');
 
-const myModel = new Schema({/* add stuff */});
-
-const bigQuerySchemaDefinition = myModel.generateBigQuerySchema();
+const bigQuerySchemaDefinition = User.generateBigQuery();
 ```
-
-**NOTE**: BigQuery is slow on large BigTable datasets.
-
 #### Hooks
 Hooks are executed at different points during the Models lifecycle. These hooks can be used to implement custom validation and custom de/serialization.
 
@@ -118,36 +113,79 @@ Hooks are executed at different points during the Models lifecycle. These hooks 
 | preFetch  | This is executed before fetching a Model, Column-Family or Column to BigTable |
 | postFetch | This is executed after fetching a Model, Column-Family or Column to BigTable  |
 
-#### RowKey Generation
-The row key can be defined in the Schema
+**Example:**
+```javascript 
 
-```
-// timestamp/reverseTimestamp
-// This is an example and NOT the final API
+const User = db.model('users', userSchema);
 
-const model = new Schema({
-  id: {
-    user: {type: DateTime}
-  },
-  user: {
-    created: {type: DateTime}
-    email: {type: DateTime}
-  }
-}, {
-  rowKey: [
-    'field:id.user',
-    ''
-  ]
+User.preSave(function(data) {
+  console.log('fired - presave');
+  return data;
 });
 
-// Row key can also be customized
+```
+
+#### RowKey Generation
+The row key can be defined in the Schema as an Array of Strings or Functions.
+
+**Example:**
+```
+const colSchema = {
+  id: {
+    type: ColumnFamilyTypes.Base,
+    columns: {
+      userId: {type: DataTypes.String}
+    }
+  },
+  data: {
+    type: ColumnFamilyTypes.Base,
+    columns: {
+      email: {type: DataTypes.String},
+      created: {type: DataTypes.DateTime},
+      updated: {type: DataTypes.DateTime}
+    }
+  }
+};
+
+const userSchema1 = Schema(colSchema, {
+  rowKey: ['id.userId', 'data.email'],
+});
+
+function reverseTimeStamp (cols) {
+  return Number.MAX_SAFE_INTEGER - cols.data.created.getTime();
+}
+
+// use a function to get/build a reverse timestamp
+const userSchema2 = Schema(colSchema, {
+  rowKey: ['id.userId', reverseTimeStamp],
+});
+
 ```
 
 ### Indexes
+Multiple indexes are supported in TableCloth and can be created based off of the Schema definition.
 
-#### Index Tables
+#### How they work
+When querying via an index table under the hood multiple calls are made:
 
-#### Index Dupe
+**Example:**
+```javascript
+
+// `data` includes the entire `User` record.
+const data = await User.findByEmail('18931243-13123-14241');
+
+```
+
+In the above example, what looks like one call is actually two calls:
+
+0. Call method "User.findByEmail"
+0. #1 Call - BigTable query against the "users_email" index table
+0. Query returns the rowKey(s) of the user(s)
+0. #2 Call - BigTable query made using the rowKey(s)
+0. Query returns the full user record(s) 
+
+**Special Circumstances:**
+If you are less concerned about storage, consistency etc. and more about latency it is possible to define an index as a "duplicate key". What this will do is instead of storing the data in a seperate index table. The data is stored in the base "users" table with a different rowKey. This effectively copies data mulitple times to the same table.
 
 ### Migrations
 MetaData column
