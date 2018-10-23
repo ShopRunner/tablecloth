@@ -17,6 +17,8 @@ We love working with BigTable, its ability to predictively scale, handle tens of
 * Multiple Indexes - BigTable has a single index (the rowKey) and for most applications this just won't work. TableCloth supports multiple indexes out of the box.
 * BigQuery Schema generation - Generate a BigQuery schema to be used when querying BigTable via BigQuery.
 
+**NOTE:** The documentation below purposefully omits the fact that BigTable stores versions of data for each column. Escape hatches will be provided for returning multiple and specific versions as allowed by the BigTable API.
+
 ## Example
 Below is an example that demonstrates the high-level API for interacting with TableCloth.
 
@@ -129,7 +131,7 @@ User.preSave(function(data) {
 The row key can be defined in the Schema as an Array of Strings or Functions.
 
 **Example:**
-```
+```javascript
 const colSchema = {
   id: {
     type: ColumnFamilyTypes.Base,
@@ -187,67 +189,19 @@ In the above example, what looks like one call is actually two calls:
 **Special Circumstances:**
 If you are less concerned about storage, consistency etc. and more about latency it is possible to define an index as a "duplicate key". What this will do is instead of storing the data in a seperate index table. The data is stored in the base "users" table with a different rowKey. This effectively copies data mulitple times to the same table.
 
-### Migrations
-MetaData column
+### MetaData & Migrations
+At some point Schemas change, data is dropped, new fields are added. This is supported via Lazy Migrations in TableCloth. Every BigTable Table has a column family named "metadata" that holds different fields that TableCloth uses under the hood (i.e. created_at, updated_at).
 
-created, updated, version
+Migrations will be handled via the "version" column. The version column will be the most recent version for the record, where the record will walk through all the migration functions until reaching the desired version.
 
-// version is used to walk through migrations
-// migration mode has to be enabled
-
-// different modes allowed: lazy migration, transform only, write only
-
-ETL migrations too... run in kubes task
-
-// allow old versions to be output (legacy code)
-
-#### Range Queries (timetamp / reverse timepstamp)
-
-#### Example
-```javascript
-
-const {Schema} = require('@precognitive/bigtable');
-
-const schema = {
-  'id': {
-     'session': {type: String},
-     'user': {type: String},
-  },
-  'user': {
-     'visits': {type: Array},
-     'data': {type: Object}
-  },
-};
-
-// connection options
-const options = {
-  projectId: '122'
-};
-
-// In future schema will be managed in a seperate table from the main data
-const model = Schema.create(schema, options);
-
-class SomeModel {
-  // custom method
-  findAThingById() {
-  
-  }
-
-  // override create
-  create() {
-  
-  }
-}
-
-module.exports = model.load('something', SomeModel);
-```
-
--> PolyMorphism
-
-# ->> number of versions returned and saved
+The API is not fully defined but we plan on supporting:
+* Full ETL based migrations - transforms all data record by record to the desired version
+* Lazy Migration Write Only - will only update the version when writing to the record, will still transform on read but won't save the transformed record.
+* Lazy Migration Full - will transform to the desired version and resave no matter if its a read or a write
 
 #### Features on Roadmap
 * User Interface for managing BigTable Models
 * TTL based indexes
+* PolyMorphism - allow multiple Schemas (two levels deep max) on the same Row
 * Python Support
 * Go Support
