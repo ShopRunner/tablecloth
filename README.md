@@ -2,7 +2,7 @@
 A tool for keeping your interactions with BigTable nice and tidy.
 
 # UNDER DEVELOPMENT (coming 2019)
-This library was originally built for internal use at [@Precognitive](https://github.com/Precognitive). We are working on finishing up some abstractions and pulling out some @precognitive specific code. Once we do so we will release our initial version
+This library was originally built for internal use at [@Precognitive](https://github.com/Precognitive). We are working on finishing up some abstractions and pulling out some [@Precognitive](https://github.com/Precognitive) specific code. Once we do so we will release our initial version
 
 The below API is a high-level look at the API we intend to bake into TableCloth in 2019. Some values could change, as this is just meant to give you base level information.
 
