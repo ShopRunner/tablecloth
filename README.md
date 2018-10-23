@@ -8,7 +8,7 @@ The below API is a high-level look at the API we intend to bake into TableCloth 
 
 If you are interested in being contacted/emailed when we release TableCloth fill out the contact form at [https://precognitive.io/contact/](https://precognitive.io/contact/) with the message being "BigTable". We will setup a mailing list for updates.
 
-## Why a BigTable wrapper?
+## Why create TableCloth?
 We love working with BigTable, its ability to predictively scale, handle tens of thousands of requests per second and its low latency responses (sub 5ms). We don't love working with (byte) strings for all of our data. Our applications need multiple data types and clean interface for modeling data. TableCloth was built to meet both of these requirements (and more).
 
 ## Features
@@ -67,21 +67,14 @@ module.exports = User;
 User.migrate({destroy: true});
 ```
 
-o create the Base, Schema and Index tables. 
-
-**NOTE on Application Permissions:**
-Due to the nature of TableCloth escalated permissions are required when intially creating the Base, Schema and Index tables.
-
-```javascript
-const myModel = 
-
-```
-
-### API Design
-The API mimics the mongoose API. This is for a couple reasons:
-* Many developers are used to it.
+### Design
+The API mimics the Mongoose API. This is for a couple reasons:
+* Developers are used to it.
 * Its well developed and meets our needs.
-* You can utilize BigTable in a manner similar to a document store
+* You can utilize BigTable in a manner similar to a document store.
+* We were using Mongo before, so it made sense.
+
+*NOTE:* TableCloth is **NOT** API compliant or compatiable but mirrors the feel of the Mongoose API.
 
 ### API & Features
 
