@@ -2,11 +2,11 @@
 A tool for keeping your interactions with BigTable nice and tidy.
 
 # UNDER DEVELOPMENT (coming 2019)
-This library was originally built for internal use at [@Precognitive](https://github.com/Precognitive). We are working on finishing up some abstractions and pulling out some [@Precognitive](https://github.com/Precognitive) specific code. Once we do so we will release our initial version
+This library was originally built for internal use at [@Precognitive](https://github.com/Precognitive). We are working on finishing up some abstractions and pulling out some [@Precognitive](https://github.com/Precognitive) specific code. Once we do so we will release our initial version (2019).
 
-The below API is a high-level look at the API we intend to bake into TableCloth in 2019. Some values could change, as this is just meant to give you base level information.
+The below API is a high-level look at the API we intend to bake into TableCloth. Some portions of the API could change, as this is just meant to give interested parties a base-level feel for the API.
 
-If you are interested in being contacted/emailed when we release TableCloth fill out the contact form at [https://precognitive.io/contact/](https://precognitive.io/contact/) with the message being "BigTable". We will setup a mailing list for updates.
+If you are interested in being contacted/emailed when we release TableCloth, fill out the contact form at [https://precognitive.io/contact/](https://precognitive.io/contact/) with the message being "BigTable". We will setup a mailing list for updates.
 
 ## Why create TableCloth?
 We love working with BigTable, its ability to predictively scale, handle tens of thousands of requests per second and its low latency responses (sub 5ms). We don't love working with (byte) strings for all of our data. Our applications need multiple data types and clean interface for modeling data. TableCloth was built to meet both of these requirements (and more).
