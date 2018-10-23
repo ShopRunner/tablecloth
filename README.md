@@ -1,7 +1,7 @@
 # ![TableCloth](/logo.png)
 A tool for keeping your interactions with BigTable nice and tidy.
 
-# UNDER DEVELOPMENT coming 2019
+# UNDER DEVELOPMENT (coming 2019)
 This library was originally built for internal use at [@Precognitive](https://github.com/Precognitive). We are working on finishing up some abstractions and pulling out some @precognitive specific code. Once we do so we will release our initial version
 
 The below API is a high-level look at the API we intend to bake into TableCloth in 2019. Some values could change, as this is just meant to give you base level information.
@@ -17,8 +17,8 @@ We love working with BigTable, its ability to predictively scale, handle tens of
 * Multiple Indexes - BigTable has a single index (the rowKey) and for most applications this just won't work. TableCloth supports multiple indexes out of the box.
 * BigQuery Schema generation - Generate a BigQuery schema to be used when creating a BigTable + BigQuery connection
 
-### Getting Started (example)
-First off you will need to create your base table schema. For the examples below we will be creating a user table for storing user data.
+### Example
+Below is an example that can 
 
 ```javascript 
 const {TableCloth, Schema} = require('@precognitive/tablecloth');
@@ -33,18 +33,27 @@ const userSchema = Schema({
   id: {
     type: ColumnFamilyTypes.Base,
     columns: {
-      userId: {type: DataTypes.String, index: true}
+      userId: {type: DataTypes.String}
     }
   },
   data: {
     type: ColumnFamilyTypes.Base,
     columns: {
-      email: {type: DataTypes.String, index: true},
+      email: {type: DataTypes.String},
       created: {type: DataTypes.DateTime},
       updated: {type: DataTypes.DateTime}
     }
   }
-}, ['id.userId', 'data.email']);
+}, {
+  rowKey: ['id.userId', 'data.email'],
+  indexes: {
+    email: ['data.email'],
+    userId: ['id.userId'],
+    
+    // composite index example
+    userId_email: ['id.userId', 'data.email']
+  }
+});
 
 // The above will create a rowKey of `<id.userId>#<data.email>` and two index tables, one for userId and one for email.
 
@@ -56,10 +65,7 @@ module.exports = User;
 // This will be run in a separate task/file not in the main application
 // @note Due to the nature of TableCloth escalated permissions are required when intially creating the Base, Schema and Index tables.
 User.migrate({destroy: true});
-
 ```
-
-
 
 o create the Base, Schema and Index tables. 
 
