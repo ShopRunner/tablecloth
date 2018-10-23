@@ -15,10 +15,10 @@ We love working with BigTable, its ability to predictively scale, handle tens of
 * Schema Enforcement - Column Family and Column level data type enforcement.
 * Multiple Data Type Support - Arrays, String, Numbers etc. are all supported out of the box. No more casting, JSON parse errors and other issues with storing byte strings.
 * Multiple Indexes - BigTable has a single index (the rowKey) and for most applications this just won't work. TableCloth supports multiple indexes out of the box.
-* BigQuery Schema generation - Generate a BigQuery schema to be used when creating a BigTable + BigQuery connection
+* BigQuery Schema generation - Generate a BigQuery schema to be used when querying BigTable via BigQuery.
 
 ### Example
-Below is an example that can 
+Below is an example that demonstrates the high-level API for interacting with TableCloth.
 
 ```javascript 
 const {TableCloth, Schema} = require('@precognitive/tablecloth');
@@ -55,15 +55,15 @@ const userSchema = Schema({
   }
 });
 
-// The above will create a rowKey of `<id.userId>#<data.email>` and two index tables, one for userId and one for email.
+// The above will create a rowKey of `<id.userId>#<data.email>` and three index tables, one for userId, one for email and a composite for userId + email (`<id.userId>#<data.email>`).
 
-// 'user' is name of the table
-const User = db.model('user', userSchema);
+// 'users' is name of the table
+const User = db.model('users', userSchema);
 
 module.exports = User;
 
-// This will be run in a separate task/file not in the main application
-// @note Due to the nature of TableCloth escalated permissions are required when intially creating the Base, Schema and Index tables.
+// This will be run in a separate task/file not in the main application.
+// NOTE: Due to the nature of TableCloth, escalated permissions are required when intially creating the Base, Schema and Index tables.
 User.migrate({destroy: true});
 ```
 
@@ -79,14 +79,10 @@ The API mimics the Mongoose API. This is for a couple reasons:
 ### API & Features
 
 #### Column-Family Types
-// add description
-
 * Base - Key/value pairs with the values being any schema.
 * HashMap - All column keys can match a regex pattern, while all values are of the same type.
 
 #### Column Data Types
-// add description
-
 * String
 * Number (we will look to seperate Integer & Float if possible)
 * DateTime
@@ -96,7 +92,8 @@ The API mimics the Mongoose API. This is for a couple reasons:
 * Binary
 * Boolean
 
-Nil is Null, undefined or empty string
+#### Nil
+In TableCloth, null, undefined or "" are treated as Nil and will not be stored.
 
 #### BigQuery Schema Generation
 An API is provided to generate the necessary BigQuery schema based off the Model definition.
