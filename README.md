@@ -206,5 +206,5 @@ The API is not fully defined but we plan on supporting:
 * Python Support
 * Go Support
 
-### Contact Us
-If you have other ideas, input etc. feel free to reach out directly at [engineering@precognitive.io](mailto:engineering@precognitive.io)
+## Contact Us
+If you have other ideas, input etc. feel free to reach out directly at [engineering@precognitive.io](mailto:engineering@precognitive.io).
