@@ -9,7 +9,7 @@ The below API is a high-level look at the API we intend to bake into TableCloth.
 If you are interested in being contacted/emailed when we release TableCloth, fill out the contact form at [https://precognitive.io/contact/](https://precognitive.io/contact/) with the message being "BigTable". We will setup a mailing list for updates.
 
 ## Why create TableCloth?
-We love working with BigTable, its ability to predictively scale, handle tens of thousands of requests per second and its low latency responses (sub 5ms). We don't love working with (byte) strings for all of our data. Our applications need multiple data types and clean interface for modeling data. TableCloth was built to meet both of these requirements (and more).
+We love working with BigTable, its ability to predictively scale, handle tens of thousands of requests per second and its low latency I/O (sub 5ms responses). We don't love working with (byte) strings as the only data type for our data. Our applications need multiple complex data types and a clean interface for modeling data. TableCloth was built to meet both of these requirements (and more).
 
 ## Features
 * Schema Enforcement - Column Family and Column level data type enforcement.
