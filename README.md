@@ -1,3 +1,5 @@
+# WIP this README is currently being iterated on, once a v1 is ready to go this repo may be reset (we are editing in the UI only).
+
 # ![TableCloth](/logo.png)
 A tool for keeping your interactions with BigTable nice and tidy.
 
