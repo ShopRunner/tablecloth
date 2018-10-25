@@ -14,11 +14,11 @@ If you are interested in being contacted/emailed when we release TableCloth, fil
 We love working with BigTable! Its ability to predictively scale, handle tens of thousands of requests per second and its low latency I/O (sub 5ms responses). We don't love working with (raw byte) strings as the only data type. Our applications need multiple complex data types and a clean interface for modeling data. We need multiple indexes, our users expect to be able to query off multiple data points. TableCloth was built to meet these requirements (and more).
 
 ## Features
-* Schema Enforcement - Column Family and Column level data type enforcement.
-* Multiple Data Type Support - Arrays, String, Numbers etc. are all supported out of the box. No more casting, JSON parse errors and other issues with storing byte strings.
-* Multiple Indexes - BigTable has a single index (the rowKey) and for most applications this just won't work. TableCloth supports multiple indexes out of the box.
-* BigQuery Schema generation - Generate a BigQuery schema to be used when querying BigTable via BigQuery.
-* Automated migrations - Migrations are run based off schema updates & managed by TableCloth.
+* _Schema Enforcement_ - Column Family and Column level data type enforcement.
+* _Multiple Data Type Support_ - Arrays, String, Numbers etc. are all supported out of the box. No more casting, JSON parse errors and other issues with storing byte strings.
+* _Multiple Indexes_ - BigTable has a single index (the rowKey) and for most applications this just won't work. TableCloth supports multiple indexes out of the box.
+* _BigQuery Schema generation_ - Generate a BigQuery schema to be used when querying BigTable via BigQuery.
+* _Automated migrations_ - Migrations are run based off schema updates & managed by TableCloth.
 
 **NOTE:** The documentation below purposefully omits the fact that BigTable stores multiple versions of column data. An interface will be provided for returning multiple and specific versions as allowed by the BigTable API.
 
@@ -199,17 +199,17 @@ At some point Schemas change, data is dropped, new fields are added. This is sup
 Migrations will be handled via the "version" column in "metadata". The version column will be the most recent version for the record, where the record will walk through all the migrations until reaching the desired version.
 
 The API is not fully defined but we plan on supporting:
-* Full ETL based migrations - transforms all data record by record to the desired version.
-* Lazy Migration (Write Only) - will only update the version when writing to the record, will still transform on read but won't save the transformed record.
-* Lazy Migration (Read/Write) - will transform to the desired version and resave no matter if its a read or a write.
+* _Full ETL based migrations_ - transforms all data record by record to the desired version.
+* _Lazy Migration (Write Only)_ - will only update the version when writing to the record, will still transform on read but won't save the transformed record.
+* _Lazy Migration (Read/Write)_ - will transform to the desired version and resave no matter if its a read or a write.
 
 #### Features on Roadmap
-* User Interface for managing BigTable Models
-* TTL based indexes
-* Immutable Schemas - Prevents unintentional Schema changes/mutations
-* PolyMorphism - allow multiple Schemas (two levels deep max) on the same Row
-* Python Support
-* Go Support
+* _User Interface for managing BigTable Models_
+* _TTL based indexes_
+* _Immutable Schemas_ - Prevents unintentional Schema changes/mutations
+* _PolyMorphism_ - allow multiple Schemas (two levels deep max) on the same Row
+* _Python Support_
+* _Go Support_
 
 ## Contact Us
 If you have other ideas, input etc. feel free to reach out directly at [engineering@precognitive.io](mailto:engineering@precognitive.io).
