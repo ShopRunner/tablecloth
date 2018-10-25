@@ -1,4 +1,4 @@
-# WIP this README is currently being iterated on, once a v1 is ready to go this repo may be reset (we are editing in the UI only).
+# this is a WIP and subject to changes.
 
 # ![TableCloth](/logo.png)
 A tool for keeping your interactions with BigTable nice and tidy.
@@ -6,20 +6,21 @@ A tool for keeping your interactions with BigTable nice and tidy.
 # UNDER DEVELOPMENT (coming 2019)
 This library was originally built for internal use at [@Precognitive](https://github.com/Precognitive). We are working on finishing up some abstractions and pulling out some [@Precognitive](https://github.com/Precognitive) specific code. Once we do so we will release our initial version (2019).
 
-The below API is a high-level look at the API we intend to bake into TableCloth. Some portions of the API could change, as this is just meant to give interested parties a base-level feel for the API.
+The below document is a high-level look at the API we intend to bake into TableCloth. Some portions of the API could change, as this is just meant to give interested parties a base-level feel for the API and implemntation details.
 
-If you are interested in being contacted/emailed when we release TableCloth, fill out the contact form at [https://precognitive.io/contact/](https://precognitive.io/contact/) with the message being "BigTable". We will setup a mailing list for updates.
+If you are interested in being contacted/emailed when we release TableCloth, fill out the contact form at [https://precognitive.io/contact/](https://precognitive.io/contact/) with the message content of "BigTable" and we will add you to the mailing list.
 
 ## Why create TableCloth?
-We love working with BigTable, its ability to predictively scale, handle tens of thousands of requests per second and its low latency I/O (sub 5ms responses). We don't love working with (byte) strings as the only data type for our data. Our applications need multiple complex data types and a clean interface for modeling data. TableCloth was built to meet both of these requirements (and more).
+We love working with BigTable! Its ability to predictively scale, handle tens of thousands of requests per second and its low latency I/O (sub 5ms responses). We don't love working with (raw byte) strings as the only data type. Our applications need multiple complex data types and a clean interface for modeling data. We need multiple indexes, our users expect to be able to query off multiple data points. TableCloth was built to meet these requirements (and more).
 
 ## Features
 * Schema Enforcement - Column Family and Column level data type enforcement.
 * Multiple Data Type Support - Arrays, String, Numbers etc. are all supported out of the box. No more casting, JSON parse errors and other issues with storing byte strings.
 * Multiple Indexes - BigTable has a single index (the rowKey) and for most applications this just won't work. TableCloth supports multiple indexes out of the box.
 * BigQuery Schema generation - Generate a BigQuery schema to be used when querying BigTable via BigQuery.
+* Automated migrations - Migrations are run based off schema updates & managed by TableCloth.
 
-**NOTE:** The documentation below purposefully omits the fact that BigTable stores versions of data for each column. Escape hatches will be provided for returning multiple and specific versions as allowed by the BigTable API.
+**NOTE:** The documentation below purposefully omits the fact that BigTable stores multiple versions of column data. An interface will be provided for returning multiple and specific versions as allowed by the BigTable API.
 
 ## Example
 Below is an example that demonstrates the high-level API for interacting with TableCloth.
@@ -87,19 +88,19 @@ The API mimics the Mongoose API. This is for a couple reasons:
 
 #### Column Data Types
 * String
-* Number (we will look to seperate Integer & Float if possible)
+* Number (we will look to seperate Integer & Float if possible in v1)
 * DateTime
-* Object (no rowkey)
-* Array (no rowkey)
-* Set (no rowkey)
+* Object
+* Array
+* Set
 * Binary
 * Boolean
 
 #### Nil
-In TableCloth, null, undefined or "" are treated as Nil and will not be stored.
+In TableCloth, `null`, `undefined` or `""` are treated as Nil and will not be stored.
 
 #### BigQuery Schema Generation
-An API is provided to generate the necessary BigQuery schema based off the Model definition.
+An API is provided to generate the necessary BigQuery schema based off the Schema definition.
 
 **Example:**
 ```javascript
@@ -107,8 +108,9 @@ const User = require('../models/User.js');
 
 const bigQuerySchemaDefinition = User.generateBigQuery();
 ```
+
 #### Hooks
-Hooks are executed at different points during the Models lifecycle. These hooks can be used to implement custom validation and custom de/serialization.
+Hooks are executed at different points during the Model's lifecycle. These hooks can be used to implement custom validation and custom de/serialization.
 
 | Hook      | Lifecycle                                                                     |
 |-----------|-------------------------------------------------------------------------------|
@@ -182,28 +184,29 @@ const data = await User.findByEmail('18931243-13123-14241');
 
 In the above example, what looks like one call is actually two calls:
 
-0. Call method "User.findByEmail"
-0. #1 Call - BigTable query against the "users_email" index table
-0. Query returns the rowKey(s) of the user(s)
-0. #2 Call - BigTable query made using the rowKey(s)
-0. Query returns the full user record(s) 
+1. Call method "User.findByEmail"
+2. #1 Call - BigTable query against the "users_email" index table
+3. Query returns the rowKey(s) of the user(s)
+4. #2 Call - BigTable query made using the rowKey(s)
+5. Query returns the full user record(s) 
 
 **Special Circumstances:**
-If you are less concerned about storage, consistency etc. and more about latency it is possible to define an index as a "duplicate key". What this will do is instead of storing the data in a seperate index table. The data is stored in the base "users" table with a different rowKey. This effectively copies data mulitple times to the same table.
+If you are less concerned about storage, consistency etc. and more about latency it is possible to define an index as a "duplicate key". What this will do is instead of storing the data in a seperate index table. The data is stored in the base table with a different rowKey. This effectively copies data mulitple times to the same table.
 
 ### MetaData & Migrations
 At some point Schemas change, data is dropped, new fields are added. This is supported via Lazy Migrations in TableCloth. Every BigTable Table has a column family named "metadata" that holds different fields that TableCloth uses under the hood (i.e. created_at, updated_at).
 
-Migrations will be handled via the "version" column. The version column will be the most recent version for the record, where the record will walk through all the migration functions until reaching the desired version.
+Migrations will be handled via the "version" column in "metadata". The version column will be the most recent version for the record, where the record will walk through all the migrations until reaching the desired version.
 
 The API is not fully defined but we plan on supporting:
-* Full ETL based migrations - transforms all data record by record to the desired version
-* Lazy Migration Write Only - will only update the version when writing to the record, will still transform on read but won't save the transformed record.
-* Lazy Migration Full - will transform to the desired version and resave no matter if its a read or a write
+* Full ETL based migrations - transforms all data record by record to the desired version.
+* Lazy Migration (Write Only) - will only update the version when writing to the record, will still transform on read but won't save the transformed record.
+* Lazy Migration (Read/Write) - will transform to the desired version and resave no matter if its a read or a write.
 
 #### Features on Roadmap
 * User Interface for managing BigTable Models
 * TTL based indexes
+* Immutable Schemas - Prevents unintentional Schema changes/mutations
 * PolyMorphism - allow multiple Schemas (two levels deep max) on the same Row
 * Python Support
 * Go Support
