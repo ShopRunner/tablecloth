@@ -6,9 +6,9 @@ node_js:
 - 9
 - 8
 install:
-- npm install -g codecov
+- npm install
 script:
 - npm audit
 - npm run lint
 - npm test
-- codecov
+- npm run codecov
