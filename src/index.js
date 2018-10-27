@@ -1,4 +1,7 @@
 'use strict';
 /* @flow */
 
-module.exports = {};
+const test = require('./lib/test');
+module.exports = {
+  test
+};
