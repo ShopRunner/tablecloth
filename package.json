@@ -4,8 +4,8 @@
   "description": "A tool for keeping your interactions with BigTable nice and tidy.",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest ./src",
-    "lint": "npx eslint ./src",
+    "test": "jest ./src",
+    "lint": "eslint ./src",
     "flow": "flow",
     "build": "flow-remove-types --out-dir dist/ src/ --ignore \"__tests__|__mocks__\""
   },
