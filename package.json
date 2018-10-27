@@ -4,8 +4,8 @@
   "description": "A tool for keeping your interactions with BigTable nice and tidy.",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest && codecov",
-    "lint": "npx semistandard"
+    "test": "jest",
+    "lint": "semistandard"
   },
   "engines": {
     "node": ">=8.0"
