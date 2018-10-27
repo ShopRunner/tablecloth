@@ -3,6 +3,10 @@
 # ![TableCloth](/logo.png)
 A tool for keeping your interactions with BigTable nice and tidy.
 
+[![codecov](https://codecov.io/gh/Precognitive/tablecloth/branch/master/graph/badge.svg)](https://codecov.io/gh/Precognitive/tablecloth)
+[![travisci](https://travis-ci.org/Precognitive/tablecloth.svg?branch=master)](https://travis-ci.org/Precognitive/tablecloth.svg?branch=master)
+
+
 # UNDER DEVELOPMENT (coming 2019)
 This library was originally built for internal use at [@Precognitive](https://github.com/Precognitive). We are working on finishing up some abstractions and pulling out some [@Precognitive](https://github.com/Precognitive) specific code. Once we do so we will release our initial version (2019).
 
