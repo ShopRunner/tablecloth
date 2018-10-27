@@ -7,5 +7,3 @@ describe('Entry point', () => {
     expect(main).toEqual({});
   });
 });
-
-
