@@ -1,5 +1,7 @@
 # this is a WIP and subject to changes.
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Precognitive/tablecloth.svg)](https://greenkeeper.io/)
+
 # ![TableCloth](/logo.png)
 A tool for keeping your interactions with BigTable nice and tidy.
 
