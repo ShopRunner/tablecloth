@@ -32,6 +32,8 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "codecov": "^3.1.0",
     "eslint": "^5.8.0",
     "eslint-plugin-flowtype": "^3.1.1",
@@ -42,6 +44,9 @@
   },
   "jest": {
     "coverageDirectory": "./coverage/",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "transform": {
+      "^.+\\.js?$": "babel-jest"
+    }
   }
 }
