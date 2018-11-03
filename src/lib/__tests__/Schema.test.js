@@ -59,4 +59,3 @@ describe('Schema.constructor()', () => {
     }).toThrow();
   });
 });
-

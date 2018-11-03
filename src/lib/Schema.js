@@ -1,5 +1,6 @@
 'use strict';
 /* @flow */
+/* global $Keys */
 
 const dataTypeEnum = require('./enums/DataType');
 const columnFamilyTypeEnum = require('./enums/ColumnFamilyType');

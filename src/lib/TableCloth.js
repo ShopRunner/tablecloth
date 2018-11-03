@@ -6,16 +6,15 @@ const BigTable = require('@google-cloud/bigtable');
 const Schema = require('./Schema');
 const Model = require('./Model');
 
-type TableClothOptions = {
-  projectId: string;
-  instance: string;
-  appProfile: ?string;
-  keyFilename: ?string;
-}
+// @todo add back when constructor needed
+// type TableClothOptions = {
+//   projectId: string;
+//   instance: string;
+//   appProfile: ?string;
+//   keyFilename: ?string;
+// }
 
 class TableCloth {
-  constructor (options: TableClothOptions) { }
-
   projectId: string;
 
   instance: string;
