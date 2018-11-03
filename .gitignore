@@ -9,6 +9,9 @@ yarn-error.log*
 dist/
 !dist/.gitkeep
 
+# Flow.js
+flow-typed
+
 # IDE
 .idea
 
