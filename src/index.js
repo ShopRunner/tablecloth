@@ -1,4 +1,10 @@
 'use strict';
 /* @flow */
 
-module.exports = {};
+const Schema = require('./lib/Schema');
+const TableCloth = require('./lib/TableCloth');
+
+module.exports = {
+  Schema,
+  TableCloth
+};
