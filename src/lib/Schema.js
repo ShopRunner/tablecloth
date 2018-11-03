@@ -4,8 +4,23 @@
 const dataTypeEnum = require('./enums/DataType');
 const columnFamilyTypeEnum = require('./enums/ColumnFamilyType');
 
+type ColumnDefinition = {
+  type: $Keys<typeof dataTypeEnum>
+}
+
+type ColumnFamilyDefinition = {
+  type: $Keys<typeof columnFamilyTypeEnum>,
+  columns: {
+    [key: string]: ColumnDefinition
+  }
+}
+
+type SchemaDefinition = {
+  [key: string]: ColumnFamilyDefinition
+}
+
 class Schema {
-  constructor (schema: Object, options: ?Object) {
+  constructor (schema: SchemaDefinition, options: ?Object) {
     this.schemaDefinition = Object.freeze(schema);
     this.options = Object.freeze(options) || null;
   }
