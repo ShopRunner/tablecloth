@@ -20,14 +20,14 @@ describe('Schema.DataTypes', () => {
 
 describe('Schema.ColumnFamilyTypes', () => {
   it('contains correct values', () => {
-    expect(Schema.ColumnFamilyTypes).toEqual({'Base': 'Base', 'Hash': 'Hash'});
+    expect(Schema.ColumnFamilyTypes).toEqual({ 'Base': 'Base', 'Hash': 'Hash' });
   });
 });
 
 describe('Schema.constructor()', () => {
   const schemaDef = {
     foo: {
-      bar: {type: Schema.DataTypes.String}
+      bar: { type: Schema.DataTypes.String }
     }
   };
 
