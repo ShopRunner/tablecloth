@@ -5,10 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "jest ./src",
-    "lint": "eslint ./src",
-    "flow": "flow",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
     "codecov": "codecov",
-    "build": "flow-remove-types --out-dir dist/ src/ --ignore \"__tests__|__mocks__\""
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "engines": {
     "node": ">=8.0"
@@ -18,9 +23,10 @@
     "url": "git+https://github.com/Precognitive/tablecloth.git"
   },
   "keywords": [
-    "bigtable"
+    "bigtable",
+    "tablecloth"
   ],
-  "author": "",
+  "author": "@Precognitive",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Precognitive/tablecloth/issues"
@@ -31,22 +37,17 @@
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "@types/jest": "^24.0.0",
+    "@types/joi": "^14.3.0",
+    "@types/lodash": "^4.14.120",
+    "@types/node": "^10.12.18",
     "codecov": "^3.1.0",
-    "eslint": "^5.8.0",
-    "eslint-plugin-flowtype": "^3.1.1",
-    "flow-bin": "^0.85.0",
-    "flow-remove-types": "^1.2.3",
     "jest": "^23.6.0",
-    "semistandard": "^12.0.1"
-  },
-  "jest": {
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "transform": {
-      "^.+\\.js?$": "babel-jest"
-    }
+    "prettier": "^1.16.4",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.2.4"
   }
 }

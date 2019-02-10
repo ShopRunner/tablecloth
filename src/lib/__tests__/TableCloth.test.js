@@ -1,7 +1,7 @@
 'use strict';
 
 const Schema = require('../Schema');
-const TableCloth = require('../TableCloth');
+const TableCloth = require('../Database');
 
 describe('TableCloth.model()', () => {
   it('returns a instantiated Model', () => {
