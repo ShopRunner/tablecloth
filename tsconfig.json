@@ -10,6 +10,7 @@
     "baseUrl": ".",
     "paths": {
     },
+    "outDir": "dist",
     "lib": [
       "ES6",
       "ESNext.AsyncIterable"

@@ -1,6 +1,6 @@
-import { Results, ResultSetArray } from '../types/Results';
+import { ResultSet, ResultSetArray } from '../types/Results';
 
-export declare type LifecycleCallback = (data: Results | ResultSetArray) => void;
+export declare type LifecycleCallback = (data: ResultSet | ResultSetArray) => void;
 
 export default interface LifecycleInterface {
   preSave(callback: LifecycleCallback): void;

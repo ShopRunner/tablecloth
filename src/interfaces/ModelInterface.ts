@@ -1,11 +1,11 @@
-import { Results, ResultSetArray } from '../types/Results';
+import { ResultSet, ResultSetArray } from '../types/Results';
 
 export default interface ModelInterface {
   find(): Promise<ResultSetArray>;
 
-  findOne(): Promise<Results>;
+  findOne(): Promise<ResultSet>;
 
-  findById(): Promise<Results>;
+  findById(): Promise<ResultSet>;
 
   save(): Promise<void>;
 

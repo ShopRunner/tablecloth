@@ -1,3 +1,3 @@
-export declare interface Results {}
+export declare interface ResultSet {}
 
-export declare interface ResultSetArray extends Array<Results> {}
+export declare interface ResultSetArray extends Array<ResultSet> {}
