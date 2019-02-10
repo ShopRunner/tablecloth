@@ -5,5 +5,5 @@ import Schema from './lib/Schema';
 export default {
   Database,
   Model,
-  Schema,
+  Schema
 };

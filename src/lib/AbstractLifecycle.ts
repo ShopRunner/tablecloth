@@ -1,7 +1,7 @@
 import LifecycleInterface, { LifecycleCallback } from '../interfaces/LifecycleInterface';
-import { ResultSet, ResultSetArray } from '../types/ResultSet';
+import { Results, ResultSetArray } from '../types/Results';
 
-function defaultCallBack(data: ResultSet | ResultSetArray): void {
+function defaultCallBack(data: Results | ResultSetArray): void {
   return;
 }
 

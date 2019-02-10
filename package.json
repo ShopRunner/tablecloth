@@ -4,7 +4,7 @@
   "description": "A tool for keeping your interactions with BigTable nice and tidy.",
   "main": "index.js",
   "scripts": {
-    "test": "jest ./src",
+    "test": "jest --passWithNoTests ./src",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
     "codecov": "codecov",

@@ -2,7 +2,7 @@
 
 import AbstractLifecycle from './AbstractLifecycle';
 import ModelInterface from '../interfaces/ModelInterface';
-import { ResultSet, ResultSetArray } from '../types/ResultSet';
+import { Results, ResultSetArray } from '../types/Results';
 
 /**
  * @class Model
@@ -15,11 +15,11 @@ export default class Model extends AbstractLifecycle implements ModelInterface {
     return;
   }
 
-  async findById(): Promise<ResultSet> {
+  async findById(): Promise<Results> {
     return;
   }
 
-  async findOne(): Promise<ResultSet> {
+  async findOne(): Promise<Results> {
     return;
   }
 
