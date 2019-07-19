@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Precognitive/tablecloth#readme",
   "dependencies": {
     "@google-cloud/bigtable": "^1.0.0",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
