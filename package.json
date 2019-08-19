@@ -40,7 +40,7 @@
     "flow-bin": "^0.85.0",
     "flow-remove-types": "^2.99.0",
     "jest": "^23.6.0",
-    "semistandard": "^13.0.0"
+    "semistandard": "^14.0.1"
   },
   "jest": {
     "coverageDirectory": "./coverage/",
