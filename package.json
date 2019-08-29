@@ -37,7 +37,7 @@
     "codecov": "^3.1.0",
     "eslint": "^5.8.0",
     "eslint-plugin-flowtype": "^3.1.1",
-    "flow-bin": "^0.85.0",
+    "flow-bin": "^0.106.3",
     "flow-remove-types": "^2.99.0",
     "jest": "^23.6.0",
     "semistandard": "^13.0.0"
